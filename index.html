@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale:0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-balance {
+                text-wrap: balance;
+            }
+            .number-input {
+                @apply border-solid border-2 border-gray-200 rounded-md p-1 mx-2 text-gray-500
+            }
+            .number-box {
+                @apply border-solid border-2 border-gray-200 rounded-md p-1 mx-2 text-gray-500
+            }
+            .button {
+                @apply bg-slate-500 hover:bg-slate-400 text-white px-4 rounded-full w-fit
+        }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid grid-cols-12">
+        <div class="lg:col-span-6 col-span-12 grid grid-cols-3 px-4">
+            <h1 class="col-span-1 font-bold text-xl text-gray-700 py-2">Bé tập tính</h1>
+            <div class="col-span-2"></div>
+
+            <form class="col-span-full grid grid-cols-6 gap-y-1">
+                <div class="col-span-full grid grid-cols-6">
+                    <label class="col-span-1" for="first_num">Số thứ nhất</label>
+                    <input class="col-span-3 border-solid number-input" type="number" id="first_num" />
+                    <div class="pl-2">
+                        <input class="" type="radio" id="add" name="operation" value="add" />
+                        <label class="px-2" for="add">Cộng</label>
+                    </div>
+                    <div class="pl-2">
+                        <input class="" type="radio" id="subtract" name="operation" value="subtract" />
+                        <label class="px-2" for="subtract">Trừ</label>
+                    </div>
+                </div>
+
+                <div class="col-span-full grid grid-cols-6">
+                    <label class="col-span-1" for="first_num">Số thứ hai</label>
+                    <input class="col-span-3 border-solid number-input" type="number" id="second_num" />
+                    <div class="pl-2">
+                        <input class="" type="radio" id="multiply" name="operation" value="multiply" />
+                        <label class="px-2" for="multiply">Nhân</label>
+                    </div>
+                    <div class="pl-2">
+                        <input class="" type="radio" id="divide" name="operation" value="divide" />
+                        <label class="px-2" for="divide">Chia</label>
+                    </div>
+                </div>
+
+                <div class="col-span-full grid grid-cols-6">
+                    <span class="col-span-1">Kết quả</span>
+                    <span class="col-span-3 number-box px-1" id="result">0</span>
+                    <input class="col-span-2 button mx-2" type="button" value="Tính" onclick="calculate()"></input>
+                </div>
+
+
+                <div class="col-span-full grid grid-cols-6">
+                    <span class="col-span-1">Thông báo</span>
+                    <span class="col-span-3 text-red-500 text-center" id="error"></span>
+                    <span class="col-span-2"></span>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+    <script>
+        function calculate() {
+            let firstNum = document.getElementById("first_num").value;
+            let secondNum =document.getElementById("second_num").value;
+            const operation_element = document.querySelector('input[name="operation"]:checked')
+            
+            if (operation_element == null){
+                document.getElementById("error").innerHTML = "Vui lòng chọn phép tính";
+                return
+            }
+
+            const operation = operation_element.value;
+
+            if (firstNum === "") {
+                document.getElementById("error").innerHTML = "Vui lòng nhập số thứ nhất";
+                return;
+            }            
+
+            if (secondNum === "") {
+                document.getElementById("error").innerHTML = "Vui lòng nhập đủ số thứ hai";
+                return;
+            }
+            
+            firstNum = parseFloat(firstNum);
+            secondNum = parseFloat(secondNum);
+
+            if (isNaN(firstNum)) {
+                document.getElementById("error").innerHTML = "Số thứ nhất không đúng định dạng";
+                return;
+            }
+            
+            if (isNaN(secondNum)) {
+                document.getElementById("error").innerHTML = "Số thứ hai không đúng định dạng";
+                return;
+            }
+
+            let result = 0;
+
+            switch (operation){
+                case "add":
+                    result = firstNum + secondNum;
+                    break;
+                case "subtract":
+                    result = firstNum - secondNum;
+                    break;
+                case "multiply":
+                    result = firstNum * secondNum;
+                    break;
+                case "divide":
+                    if (secondNum === 0) {
+                        document.getElementById("error").innerHTML = "Không thể chia cho 0";
+                        return;
+                    }
+                    result = firstNum / secondNum;
+                    break;
+                default:
+                    return;
+            }
+
+            document.getElementById("result").innerHTML = result;
+            document.getElementById("error").innerHTML = "";
+        }
+    </script>
+</body>
+
+</html>
